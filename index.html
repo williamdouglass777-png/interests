@@ -7,19 +7,49 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { min-height: 100vh; background: #f5f0e8; font-family: 'Cormorant Garamond', Georgia, serif; padding: 48px 24px 64px; color: #1a1a1a; }
+    body { min-height: 100vh; background: #f5f0e8; font-family: 'Cormorant Garamond', Georgia, serif; color: #1a1a1a; }
+
+    /* Auth */
+    .auth-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .auth-box { max-width: 380px; width: 100%; }
+    .auth-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 48px; line-height: 1; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .auth-title em { font-style: italic; }
+    .auth-sub { font-family: 'DM Mono', monospace; font-size: 9px; color: #bbb; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 40px; }
+    .auth-tabs { display: flex; margin-bottom: 28px; border-bottom: 1px solid #c8bfb0; }
+    .auth-tab { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; padding: 0 0 10px; color: #bbb; margin-right: 20px; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
+    .auth-tab.active { color: #1a1a1a; border-bottom-color: #1a1a1a; }
+    .auth-field { margin-bottom: 16px; }
+    .auth-field label { font-family: 'DM Mono', monospace; font-size: 9px; color: #999; letter-spacing: 0.12em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+    .auth-field input { width: 100%; font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #1a1a1a; background: transparent; border: none; border-bottom: 1px solid #c8bfb0; outline: none; padding: 6px 0; }
+    .auth-field input:focus { border-bottom-color: #1a1a1a; }
+    .auth-submit { margin-top: 24px; width: 100%; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; background: #1a1a1a; color: #f5f0e8; border: none; padding: 12px; cursor: pointer; }
+    .auth-submit:hover { background: #333; }
+    .auth-error { font-family: 'DM Mono', monospace; font-size: 9px; color: #c97a7a; letter-spacing: 0.05em; margin-top: 10px; min-height: 14px; }
+
+    /* App */
+    .app-screen { display: none; padding: 48px 24px 64px; }
+    .app-screen.visible { display: block; }
     .container { max-width: 640px; margin: 0 auto; }
     .meta { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: #999; margin-bottom: 20px; text-transform: uppercase; }
-    h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(44px, 9vw, 76px); line-height: 1.0; letter-spacing: -0.02em; color: #1a1a1a; }
+    h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(44px, 9vw, 76px); line-height: 1.0; letter-spacing: -0.02em; }
     h1 em { font-style: italic; }
     .rule { margin-top: 28px; width: 40px; height: 1px; background: #1a1a1a; margin-bottom: 20px; }
     .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
     .edit-hint { font-family: 'DM Mono', monospace; font-size: 9px; color: #ccc; letter-spacing: 0.1em; text-transform: uppercase; }
+    .toolbar-right { display: flex; align-items: center; gap: 14px; }
     .status { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
-    .status.saving { color: #aaa; }
-    .status.saved { color: #bbb; }
-    .status.error { color: #c97a7a; }
-    .status.loading { color: #ccc; }
+    .status.saving { color: #aaa; } .status.saved { color: #bbb; } .status.error { color: #c97a7a; } .status.loading { color: #ccc; }
+    .icon-btn { background: none; border: 1px solid #ddd; border-radius: 2px; cursor: pointer; font-size: 14px; padding: 4px 8px; line-height: 1; transition: border-color 0.15s; }
+    .icon-btn:hover { border-color: #c8bfb0; }
+    .icon-btn.highlight { border-color: #d4a843; background: #fdf8ee; }
+    .text-btn { font-family: 'DM Mono', monospace; font-size: 9px; color: #ccc; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: none; cursor: pointer; transition: color 0.15s; }
+    .text-btn:hover { color: #888; }
+
+    /* Readonly banner */
+    .readonly-banner { background: #1a1a1a; color: #f5f0e8; text-align: center; padding: 10px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; }
+    .readonly-banner a { color: #f5f0e8; }
+
+    /* Categories */
     .cat-row { display: grid; grid-template-columns: 56px 1fr; align-items: start; border-top: 1px solid #c8bfb0; padding: 18px 0; cursor: pointer; transition: background 0.2s; }
     .cat-row:hover { background: rgba(0,0,0,0.02); }
     .cat-row.last { border-bottom: 1px solid #c8bfb0; }
@@ -35,19 +65,11 @@
     .cat-count { font-family: 'DM Mono', monospace; font-size: 10px; color: #bbb; }
     .chevron { font-family: Georgia, serif; font-size: 14px; color: #999; display: inline-block; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); line-height: 1; }
     .chevron.open { transform: rotate(90deg); }
-    .del-cat-btn { opacity: 0; transition: opacity 0.15s; background: none; border: none; cursor: pointer; color: #ccc; font-size: 11px; font-family: 'DM Mono', monospace; line-height: 1; padding: 2px 5px; letter-spacing: 0.05em; }
+    .del-cat-btn { opacity: 0; transition: opacity 0.15s; background: none; border: none; cursor: pointer; color: #ccc; font-size: 11px; font-family: 'DM Mono', monospace; padding: 2px 5px; letter-spacing: 0.05em; }
     .cat-label-wrap:hover .del-cat-btn { opacity: 1; }
     .del-cat-btn:hover { color: #888; }
-    .confirm-box { background: #f5f0e8; border: 1px solid #c8bfb0; padding: 32px 36px; max-width: 340px; width: 90%; }
-    .confirm-box p { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #1a1a1a; margin-bottom: 8px; }
-    .confirm-box small { font-family: 'DM Mono', monospace; font-size: 9px; color: #aaa; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 24px; }
-    .confirm-actions { display: flex; gap: 12px; }
-    .confirm-cancel { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; background: none; border: 1px solid #c8bfb0; color: #888; padding: 9px 18px; cursor: pointer; flex: 1; }
-    .confirm-cancel:hover { border-color: #a09890; }
-    .confirm-delete { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; background: #1a1a1a; border: 1px solid #1a1a1a; color: #f5f0e8; padding: 9px 18px; cursor: pointer; flex: 1; }
-    .confirm-delete:hover { background: #333; }
     .item-list { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease; }
-    .item-list.open { max-height: 800px; opacity: 1; }
+    .item-list.open { max-height: 9999px; opacity: 1; }
     .item-list-inner { padding-top: 14px; padding-bottom: 2px; }
     .item-row { display: flex; align-items: baseline; gap: 12px; padding: 6px 0; border-bottom: 1px solid #e5ddd3; }
     .item-row:last-of-type { border-bottom: none; }
@@ -68,34 +90,184 @@
     .footer-left { font-family: 'DM Mono', monospace; font-size: 9px; color: #ccc; letter-spacing: 0.15em; text-transform: uppercase; }
     .footer-right { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: #bbb; }
     .loading-screen { padding: 60px 0; font-family: 'DM Mono', monospace; font-size: 10px; color: #ccc; letter-spacing: 0.2em; text-transform: uppercase; }
+
+    /* Modals shared */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(245,240,232,0.88); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #f5f0e8; border: 1px solid #c8bfb0; padding: 32px 36px; max-width: 380px; width: 90%; }
+    .modal-box h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 24px; margin-bottom: 8px; }
+    .modal-box p { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #1a1a1a; margin-bottom: 8px; }
+    .modal-box small { font-family: 'DM Mono', monospace; font-size: 9px; color: #aaa; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 16px; }
+    .modal-url { width: 100%; font-family: 'DM Mono', monospace; font-size: 10px; color: #555; background: #eceae4; border: 1px solid #c8bfb0; padding: 10px 12px; outline: none; margin-bottom: 16px; word-break: break-all; user-select: all; cursor: text; }
+    .modal-actions { display: flex; gap: 10px; }
+    .btn-primary { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; background: #1a1a1a; color: #f5f0e8; border: none; padding: 9px 18px; cursor: pointer; flex: 1; transition: background 0.15s; }
+    .btn-primary:hover { background: #333; }
+    .btn-secondary { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; background: none; color: #888; border: 1px solid #c8bfb0; padding: 9px 18px; cursor: pointer; flex: 1; transition: border-color 0.15s; }
+    .btn-secondary:hover { border-color: #a09890; }
+
+    /* Achievements panel */
+    .ach-overlay { position: fixed; inset: 0; background: rgba(245,240,232,0.5); z-index: 8000; display: none; }
+    .ach-overlay.open { display: block; }
+    .ach-panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100vw); background: #f5f0e8; border-left: 1px solid #c8bfb0; padding: 40px 32px; overflow-y: auto; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); z-index: 8001; }
+    .ach-panel.open { transform: translateX(0); }
+    .ach-panel-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 28px; }
+    .ach-panel-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 28px; }
+    .ach-close { background: none; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 11px; color: #bbb; letter-spacing: 0.1em; }
+    .ach-close:hover { color: #888; }
+    .ach-progress-wrap { margin-bottom: 28px; }
+    .ach-progress-label { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .ach-progress-label span { font-family: 'DM Mono', monospace; font-size: 9px; color: #bbb; letter-spacing: 0.1em; text-transform: uppercase; }
+    .ach-progress-track { width: 100%; height: 3px; background: #e8e0d4; border-radius: 2px; overflow: hidden; }
+    .ach-progress-fill { height: 100%; background: #1a1a1a; border-radius: 2px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+    .ach-section-title { font-family: 'DM Mono', monospace; font-size: 8px; color: #bbb; letter-spacing: 0.2em; text-transform: uppercase; margin: 20px 0 10px; }
+    .badges-grid { display: flex; flex-direction: column; gap: 8px; }
+    .badge { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid #e8e0d4; border-radius: 2px; background: #faf8f4; }
+    .badge.locked { opacity: 0.28; filter: grayscale(1); }
+    .badge.unlocked { border-color: #c8bfb0; background: #f5f0e8; }
+    .badge.unlocked.gold { border-color: #d4a843; background: #fdf8ee; }
+    .badge-icon { font-size: 18px; line-height: 1; flex-shrink: 0; }
+    .badge-info { display: flex; flex-direction: column; gap: 2px; flex-grow: 1; }
+    .badge-name { font-family: 'DM Mono', monospace; font-size: 8px; color: #555; letter-spacing: 0.1em; text-transform: uppercase; }
+    .badge-desc { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: #999; font-style: italic; }
+    .badge-check { font-size: 11px; color: #bbb; flex-shrink: 0; }
+    .badge.unlocked .badge-check { color: #888; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1a1a1a; color: #f5f0e8; padding: 14px 22px; border-radius: 2px; display: flex; align-items: center; gap: 12px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; z-index: 10000; opacity: 0; transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease; white-space: nowrap; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast-icon { font-size: 18px; }
+
+    /* Visual flair */
+    body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:1; opacity:0.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size:180px; animation:grain 0.5s steps(1) infinite; }
+    @keyframes grain { 0%,100%{background-position:0 0} 10%{background-position:-5% -10%} 20%{background-position:-15% 5%} 30%{background-position:7% -25%} 40%{background-position:-5% 25%} 50%{background-position:-15% 10%} 60%{background-position:15% 0%} 70%{background-position:0 15%} 80%{background-position:3% 35%} 90%{background-position:-10% 10%} }
+    h1 { animation:floatIn 0.9s cubic-bezier(0.22,1,0.36,1) both; }
+    @keyframes floatIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+    .rule { animation:ruleIn 1.1s cubic-bezier(0.22,1,0.36,1) both; transform-origin:left; }
+    @keyframes ruleIn { from{transform:scaleX(0);opacity:0} to{transform:scaleX(1);opacity:1} }
+    .cat-row { transition:background 0.2s, transform 0.18s cubic-bezier(0.4,0,0.2,1), box-shadow 0.18s; }
+    .cat-row:hover { transform:translateX(3px); box-shadow:-3px 0 0 #1a1a1a; }
+    @keyframes itemPop { 0%{opacity:0;transform:translateX(-10px) scale(0.96)} 60%{opacity:1;transform:translateX(2px) scale(1.01)} 100%{opacity:1;transform:translateX(0) scale(1)} }
+    .item-row.pop { animation:itemPop 0.38s cubic-bezier(0.34,1.56,0.64,1) both; }
+    @keyframes countBounce { 0%,100%{transform:scale(1)} 40%{transform:scale(1.6)} 70%{transform:scale(0.88)} }
+    .cat-count.bounce { animation:countBounce 0.45s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes catOpen { 0%{box-shadow:-3px 0 0 transparent} 25%{box-shadow:-3px 0 0 #1a1a1a} 100%{box-shadow:-3px 0 0 transparent} }
+    .cat-row.opening { animation:catOpen 0.5s ease forwards; }
+    #confetti-canvas { position:fixed; inset:0; pointer-events:none; z-index:99999; }
+    @keyframes badgePulse { 0%{box-shadow:0 0 0 0 rgba(212,168,67,0.6)} 70%{box-shadow:0 0 0 14px rgba(212,168,67,0)} 100%{box-shadow:0 0 0 0 rgba(212,168,67,0)} }
+    .badge.just-unlocked { animation:badgePulse 0.8s ease; }
+    .cat-count { display:inline-block; transition:color 0.3s; }
+    .add-item-btn { position:relative; overflow:hidden; }
+    .add-item-btn::after { content:''; position:absolute; inset:0; background:radial-gradient(circle, rgba(0,0,0,0.07) 0%, transparent 70%); opacity:0; transition:opacity 0.3s; }
+    .add-item-btn:hover::after { opacity:1; }
   </style>
 </head>
 <body>
 
-<div id="confirm-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(245,240,232,0.88); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(3px);">
-  <div class="confirm-box">
-    <p>Delete this category?</p>
-    <small id="confirm-label">—</small>
-    <div class="confirm-actions">
-      <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
-      <button class="confirm-delete" id="confirm-delete-btn">Delete</button>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toast-icon">🏆</span>
+  <span id="toast-text"></span>
+</div>
+
+<!-- Achievements overlay + panel -->
+<div class="ach-overlay" id="ach-overlay"></div>
+<div class="ach-panel" id="ach-panel">
+  <div class="ach-panel-header">
+    <span class="ach-panel-title"><em>Achievements</em></span>
+    <button class="ach-close" id="ach-close">Close ×</button>
+  </div>
+  <div class="ach-progress-wrap">
+    <div class="ach-progress-label">
+      <span>Progress</span>
+      <span id="progress-text">—</span>
+    </div>
+    <div class="ach-progress-track">
+      <div class="ach-progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+  <div class="ach-section-title">Entries</div>
+  <div class="badges-grid" id="badges-entries"></div>
+  <div class="ach-section-title">Categories</div>
+  <div class="badges-grid" id="badges-cats"></div>
+  <div class="ach-section-title">Category Depth</div>
+  <div class="badges-grid" id="badges-depth"></div>
+</div>
+
+<!-- Share modal -->
+<div class="modal-overlay" id="share-modal">
+  <div class="modal-box">
+    <h3><em>Share your list</em></h3>
+    <small>Anyone with this link can view your list</small>
+    <div class="modal-url" id="share-url"></div>
+    <div class="modal-actions">
+      <button class="btn-primary" id="copy-btn">Copy link</button>
+      <button class="btn-secondary" id="share-close">Close</button>
     </div>
   </div>
 </div>
 
-<div class="container">
-  <div class="meta" id="meta">Personal Index</div>
-  <h1>Things That<br /><em>Interest Me</em></h1>
-  <div class="rule"></div>
-  <div class="toolbar">
-    <div class="edit-hint">Click any label or item to edit · × to delete · + to add</div>
-    <span class="status loading" id="status">Loading…</span>
+<!-- Confirm delete modal -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal-box">
+    <p>Delete this category?</p>
+    <small id="confirm-label">—</small>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="confirm-cancel">Cancel</button>
+      <button class="btn-primary" id="confirm-ok">Delete</button>
+    </div>
   </div>
-  <div id="cat-list"><div class="loading-screen">Loading…</div></div>
-  <button class="add-cat-btn" onclick="addCategory()">+ Add category</button>
-  <div class="footer">
-    <span class="footer-left" id="footer-left">—</span>
-    <span class="footer-right">a partial portrait</span>
+</div>
+
+<!-- Auth screen -->
+<div class="auth-screen" id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-title">Things That<br /><em>Interest Me</em></div>
+    <div class="auth-sub">Sign in to your list</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login">Sign in</button>
+      <button class="auth-tab" id="tab-signup">Create account</button>
+    </div>
+    <div class="auth-field">
+      <label>Username</label>
+      <input type="text" id="auth-username" placeholder="your name" />
+    </div>
+    <div class="auth-field">
+      <label>Password</label>
+      <input type="password" id="auth-password" placeholder="••••••••" />
+    </div>
+    <button class="auth-submit" id="auth-submit">Sign in</button>
+    <div class="auth-error" id="auth-error"></div>
+  </div>
+</div>
+
+<!-- Readonly banner -->
+<div id="readonly-banner" style="display:none" class="readonly-banner">
+  Viewing <span id="readonly-name"></span>'s list — <a href="javascript:void(0)" id="make-own-link">make your own</a>
+</div>
+
+<!-- App -->
+<div class="app-screen" id="app-screen">
+  <div class="container">
+    <div class="meta" id="meta">Personal Index</div>
+    <h1>Things That<br /><em>Interest Me</em></h1>
+    <div class="rule"></div>
+    <div class="toolbar">
+      <div class="edit-hint">Click any label or item to edit · × to delete · + to add</div>
+      <div class="toolbar-right">
+        <button class="icon-btn" id="ach-btn" title="Achievements">🏆</button>
+        <button class="text-btn" id="share-btn">Share ↗</button>
+        <button class="text-btn" id="logout-btn">Sign out</button>
+        <span class="status loading" id="status">Loading…</span>
+      </div>
+    </div>
+    <div id="cat-list"><div class="loading-screen">Loading…</div></div>
+    <button class="add-cat-btn" id="add-cat-btn">+ Add category</button>
+    <div class="footer">
+      <span class="footer-left" id="footer-left">—</span>
+      <span class="footer-right">a partial portrait</span>
+    </div>
   </div>
 </div>
 
@@ -103,70 +275,235 @@
   const SUPABASE_URL      = "https://mofbgslzyssfsxifqixs.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_d5PlNn4UKuNbNijlpXEzOg_nYy3gr9a";
   const TABLE = "categories";
-
-  const baseHeaders = {
+  const USERS = "users";
+  const H = {
     "Content-Type": "application/json",
     "apikey": SUPABASE_ANON_KEY,
-    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+    "Authorization": "Bearer " + SUPABASE_ANON_KEY,
   };
 
-  const defaultCategories = [
-    { label: "Consumables",    items: ["Diet Coke", "Blue Moon", "Drunk cigarettes", "Nicotine", "Monk Fruit Redbull", "Drizzalicious"] },
-    { label: "Games & Tech",   items: ["Minecraft", "Elden Ring", "Lies of P", "PAX", "Computer specs", "Kick streamers (why?)"] },
-    { label: "Film & Music",   items: ["Wes Anderson", "Fargo", "Paris, Texas", "Dominic Fike", "Beabadoobee", "Brockhampton", "Fakemink", "EsDeeKid", "The Drama", "Geese", "I Write Sins Not Tragedies"] },
-    { label: "Body & Self",    items: ["Improving looks", "Fixing my hair", "Upper Body day", "Feeling my chest muscles", "Popping my back", "Optimizing lifestyle"] },
-    { label: "Aesthetic",      items: ["Traditional tattoos", "High fashion", "Interior Design", "Leather couches", "Small lamps", "French English accents"] },
-    { label: "Vibes & Feeling",items: ["Sun after winter", "When dogs lean into me", "Sleeping in", "Remaining calm in tense situations", "Patient people", "Listening to people talk about special interests", "Using words I just barely learned", "Hope for the future"] },
-    { label: "Sports",         items: ["Basketball"] },
+  const ACHIEVEMENTS = [
+    { id:"e5",    t:5,    icon:"🌱", name:"Planting Seeds",    desc:"5 entries",    type:"total" },
+    { id:"e10",   t:10,   icon:"👀", name:"Eyes Open",         desc:"10 entries",   type:"total" },
+    { id:"e25",   t:25,   icon:"🔥", name:"Caught Fire",       desc:"25 entries",   type:"total" },
+    { id:"e50",   t:50,   icon:"🧩", name:"Pattern Emerging",  desc:"50 entries",   type:"total" },
+    { id:"e75",   t:75,   icon:"🌊", name:"In the Flow",       desc:"75 entries",   type:"total" },
+    { id:"e100",  t:100,  icon:"💯", name:"Triple Digits",     desc:"100 entries",  type:"total", gold:true },
+    { id:"e125",  t:125,  icon:"🎸", name:"Main Character",    desc:"125 entries",  type:"total" },
+    { id:"e150",  t:150,  icon:"🗺️", name:"Cartographer",      desc:"150 entries",  type:"total" },
+    { id:"e175",  t:175,  icon:"🌙", name:"Night Owl Energy",  desc:"175 entries",  type:"total" },
+    { id:"e200",  t:200,  icon:"🧠", name:"Big Brain",         desc:"200 entries",  type:"total", gold:true },
+    { id:"e225",  t:225,  icon:"🎭", name:"Multitudes",        desc:"225 entries",  type:"total" },
+    { id:"e250",  t:250,  icon:"📡", name:"Broadcasting Live", desc:"250 entries",  type:"total" },
+    { id:"e275",  t:275,  icon:"🏔️", name:"Summit Chaser",     desc:"275 entries",  type:"total" },
+    { id:"e300",  t:300,  icon:"👁️", name:"All Seeing",        desc:"300 entries",  type:"total", gold:true },
+    { id:"e350",  t:350,  icon:"🌌", name:"Constellation",     desc:"350 entries",  type:"total" },
+    { id:"e400",  t:400,  icon:"🔮", name:"Oracle",            desc:"400 entries",  type:"total", gold:true },
+    { id:"e500",  t:500,  icon:"🛸", name:"Other Dimension",   desc:"500 entries",  type:"total", gold:true },
+    { id:"e750",  t:750,  icon:"🌍", name:"World Builder",     desc:"750 entries",  type:"total", gold:true },
+    { id:"e1000", t:1000, icon:"⚡", name:"Legendary",         desc:"1000 entries", type:"total", gold:true },
+    { id:"cats3",  t:3,  icon:"📂", name:"Categorized",  desc:"3 categories",            type:"cats" },
+    { id:"cats5",  t:5,  icon:"🗂️", name:"Organized",    desc:"5 categories",            type:"cats" },
+    { id:"cats8",  t:8,  icon:"🏛️", name:"Archivist",    desc:"8 categories",            type:"cats" },
+    { id:"cats12", t:12, icon:"🏙️", name:"City Planner", desc:"12 categories",           type:"cats", gold:true },
+    { id:"d5",  t:5,  icon:"📌", name:"Deep Dive",  desc:"5 items in one category",  type:"depth" },
+    { id:"d10", t:10, icon:"🎯", name:"Specialist",  desc:"10 items in one category", type:"depth" },
+    { id:"d20", t:20, icon:"🔬", name:"Obsessed",    desc:"20 items in one category", type:"depth", gold:true },
+    { id:"d30", t:30, icon:"🧬", name:"Researcher",  desc:"30 items in one category", type:"depth", gold:true },
   ];
 
+  // ── State ──────────────────────────────────────────────────────────
+  let currentUser = null;
   let categories = [];
   let activeId = null;
   let saveTimer = null;
+  let toastQueue = [];
+  let toastBusy = false;
+  let authMode = "login";
+  let unlockedIds = new Set();
+  let confirmCallback = null;
+  let readonlyMode = false;
+  let readonlyUsername = "";
+
+  // ── Helpers ────────────────────────────────────────────────────────
+  function $(id) { return document.getElementById(id); }
+  function setStatus(s, t) { $("status").className = "status " + s; $("status").textContent = t; }
+
+  // ── Sound ──────────────────────────────────────────────────────────
+
+  // ── Toast ──────────────────────────────────────────────────────────
+  function showToast(icon, text) {
+    toastQueue.push({ icon, text });
+    if (!toastBusy) nextToast();
+  }
+  function nextToast() {
+    if (!toastQueue.length) { toastBusy = false; return; }
+    toastBusy = true;
+    const { icon, text } = toastQueue.shift();
+    $("toast-icon").textContent = icon;
+    $("toast-text").textContent = text;
+    $("toast").classList.add("show");
+    setTimeout(() => { $("toast").classList.remove("show"); setTimeout(nextToast, 400); }, 3000);
+  }
+
+  // ── Achievements ───────────────────────────────────────────────────
+  function checkAchievements(silent) {
+    const total = categories.reduce((a, c) => a + c.items.length, 0);
+    const cats = categories.length;
+    const depth = categories.length ? Math.max(...categories.map(c => c.items.length)) : 0;
+    ACHIEVEMENTS.forEach(a => {
+      if (unlockedIds.has(a.id)) return;
+      const val = a.type === "total" ? total : a.type === "cats" ? cats : depth;
+      if (val >= a.t) {
+        unlockedIds.add(a.id);
+        if (!silent) { showToast(a.icon, a.name + " unlocked!"); $("ach-btn").classList.add("highlight"); achievementFlair(); }
+      }
+    });
+    if (currentUser) localStorage.setItem("ach-" + currentUser.id, JSON.stringify([...unlockedIds]));
+    renderBadges();
+    renderProgress(total);
+  }
+
+  function renderBadges() {
+    const grids = { total: "badges-entries", cats: "badges-cats", depth: "badges-depth" };
+    Object.values(grids).forEach(id => { $(id).innerHTML = ""; });
+    ACHIEVEMENTS.forEach(a => {
+      const u = unlockedIds.has(a.id);
+      const d = document.createElement("div");
+      d.className = "badge" + (u ? " unlocked" + (a.gold ? " gold" : "") : " locked");
+      d.innerHTML = '<span class="badge-icon">' + a.icon + '</span><div class="badge-info"><span class="badge-name">' + a.name + '</span><span class="badge-desc">' + a.desc + '</span></div><span class="badge-check">' + (u ? "✓" : "") + '</span>';
+      $(grids[a.type]).appendChild(d);
+    });
+  }
+
+  function renderProgress(total) {
+    const ms = ACHIEVEMENTS.filter(a => a.type === "total").map(a => a.t).sort((a,b) => a-b);
+    const next = ms.find(m => m > total) || ms[ms.length - 1];
+    const prev = [...ms].reverse().find(m => m <= total) || 0;
+    const pct = prev === next ? 100 : Math.round(((total - prev) / (next - prev)) * 100);
+    $("progress-fill").style.width = pct + "%";
+    $("progress-text").textContent = total >= next ? total + " entries" : total + " entries · next: " + next;
+  }
+
+  // ── Achievements panel ─────────────────────────────────────────────
+  function toggleAch() {
+    const open = $("ach-panel").classList.toggle("open");
+    $("ach-overlay").classList.toggle("open", open);
+    if (open) $("ach-btn").classList.remove("highlight");
+  }
+
+  // ── Share ──────────────────────────────────────────────────────────
+  function openShare() {
+    const url = window.location.origin + window.location.pathname + "?view=" + encodeURIComponent(currentUser.username);
+    $("share-url").textContent = url;
+    $("copy-btn").textContent = "Copy link";
+    $("share-modal").classList.add("open");
+  }
+
+  function copyLink() {
+    const url = $("share-url").textContent;
+    const btn = $("copy-btn");
+    try {
+      const el = document.createElement("textarea");
+      el.value = url; el.style.position = "fixed"; el.style.opacity = "0";
+      document.body.appendChild(el); el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+      btn.textContent = "Copied ✓";
+      setTimeout(() => btn.textContent = "Copy link", 2000);
+    } catch(e) {
+      btn.textContent = "Copy link";
+    }
+  }
+
+  // ── Confirm ────────────────────────────────────────────────────────
+  function showConfirm(label, cb) {
+    $("confirm-label").textContent = label.toUpperCase();
+    $("confirm-modal").classList.add("open");
+    confirmCallback = cb;
+  }
+  function closeConfirm() { $("confirm-modal").classList.remove("open"); confirmCallback = null; }
+
+  // ── Auth ───────────────────────────────────────────────────────────
+  function switchTab(mode) {
+    authMode = mode;
+    $("tab-login").classList.toggle("active", mode === "login");
+    $("tab-signup").classList.toggle("active", mode === "signup");
+    $("auth-submit").textContent = mode === "login" ? "Sign in" : "Create account";
+    $("auth-error").textContent = "";
+  }
+
+  async function submitAuth() {
+    const username = $("auth-username").value.trim().toLowerCase();
+    const password = $("auth-password").value;
+    $("auth-error").textContent = "";
+    if (!username || !password) { $("auth-error").textContent = "Please fill in both fields."; return; }
+    if (password.length < 4) { $("auth-error").textContent = "Password must be at least 4 characters."; return; }
+
+    if (authMode === "signup") {
+      const check = await fetch(SUPABASE_URL + "/rest/v1/" + USERS + "?username=eq." + encodeURIComponent(username) + "&select=id", { headers: H });
+      const existing = await check.json();
+      if (existing.length > 0) { $("auth-error").textContent = "That username is taken."; return; }
+      const res = await fetch(SUPABASE_URL + "/rest/v1/" + USERS, {
+        method: "POST", headers: { ...H, "Prefer": "return=representation" },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!res.ok) { $("auth-error").textContent = "Error creating account."; return; }
+      loginUser((await res.json())[0]);
+    } else {
+      const res = await fetch(SUPABASE_URL + "/rest/v1/" + USERS + "?username=eq." + encodeURIComponent(username) + "&password=eq." + encodeURIComponent(password) + "&select=*", { headers: H });
+      const users = await res.json();
+      if (!users.length) { $("auth-error").textContent = "Incorrect username or password."; return; }
+      loginUser(users[0]);
+    }
+  }
+
+  function loginUser(user) {
+    currentUser = user;
+    localStorage.setItem("current-user", JSON.stringify(user));
+    unlockedIds = new Set(JSON.parse(localStorage.getItem("ach-" + user.id) || "[]"));
+    $("auth-screen").style.display = "none";
+    $("app-screen").classList.add("visible");
+    loadData();
+  }
+
+  function logout() {
+    currentUser = null;
+    localStorage.removeItem("current-user");
+    categories = []; activeId = null;
+    $("app-screen").classList.remove("visible");
+    $("auth-screen").style.display = "";
+    $("auth-username").value = "";
+    $("auth-password").value = "";
+    $("auth-error").textContent = "";
+    $("cat-list").innerHTML = '<div class="loading-screen">Loading…</div>';
+  }
 
   // ── API ────────────────────────────────────────────────────────────
   async function dbLoad() {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?select=*`, { headers: baseHeaders });
+    const res = await fetch(SUPABASE_URL + "/rest/v1/" + TABLE + "?select=*&user_id=eq." + currentUser.id, { headers: H });
     if (!res.ok) throw new Error(await res.text());
     return res.json();
   }
-
   async function dbInsert(data) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`, {
-      method: "POST",
-      headers: { ...baseHeaders, "Prefer": "return=representation" },
-      body: JSON.stringify(data),
+    const res = await fetch(SUPABASE_URL + "/rest/v1/" + TABLE, {
+      method: "POST", headers: { ...H, "Prefer": "return=representation" },
+      body: JSON.stringify({ ...data, user_id: currentUser.id }),
     });
     if (!res.ok) throw new Error(await res.text());
     return (await res.json())[0];
   }
-
   async function dbPatch(id, data) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
-      method: "PATCH",
-      headers: { ...baseHeaders, "Prefer": "return=minimal" },
-      body: JSON.stringify(data),
+    const res = await fetch(SUPABASE_URL + "/rest/v1/" + TABLE + "?id=eq." + id + "&user_id=eq." + currentUser.id, {
+      method: "PATCH", headers: { ...H, "Prefer": "return=minimal" }, body: JSON.stringify(data),
     });
     if (!res.ok) throw new Error(await res.text());
   }
-
   async function dbDelete(id) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
-      method: "DELETE", headers: baseHeaders,
+    const res = await fetch(SUPABASE_URL + "/rest/v1/" + TABLE + "?id=eq." + id + "&user_id=eq." + currentUser.id, {
+      method: "DELETE", headers: H,
     });
     if (!res.ok) throw new Error(await res.text());
-  }
-
-  // ── Sort by item count ─────────────────────────────────────────────
-  function sortCategories() {
-    categories.sort((a, b) => b.items.length - a.items.length);
-  }
-
-  // ── Status ─────────────────────────────────────────────────────────
-  function setStatus(state, text) {
-    const el = document.getElementById("status");
-    el.className = `status ${state}`;
-    el.textContent = text;
   }
 
   function scheduleSave(fn) {
@@ -174,52 +511,37 @@
     clearTimeout(saveTimer);
     saveTimer = setTimeout(async () => {
       try { await fn(); setStatus("saved", "Saved"); }
-      catch (e) { console.error(e); setStatus("error", "Save failed"); }
+      catch(e) { console.error(e); setStatus("error", "Save failed"); }
     }, 700);
-  }
-
-  // ── Seed if empty ──────────────────────────────────────────────────
-  async function seedIfEmpty(rows) {
-    if (rows.length > 0) return rows;
-    setStatus("saving", "Setting up…");
-    const seeded = [];
-    for (let i = 0; i < defaultCategories.length; i++) {
-      const row = await dbInsert({ label: defaultCategories[i].label, items: defaultCategories[i].items, sort_order: i });
-      seeded.push(row);
-    }
-    return seeded;
   }
 
   // ── Load ───────────────────────────────────────────────────────────
   async function loadData() {
     setStatus("loading", "Loading…");
     try {
-      let rows = await dbLoad();
-      rows = await seedIfEmpty(rows);
+      const rows = await dbLoad();
       categories = rows.map(r => ({ id: r.id, label: r.label, items: Array.isArray(r.items) ? r.items : [] }));
-      sortCategories();
-      render();
+      sortCats(); render(); checkAchievements(true);
       setStatus("saved", "Saved");
-    } catch (e) {
-      console.error(e);
-      setStatus("error", "Connection error");
-      document.getElementById("cat-list").innerHTML = `<div class="loading-screen" style="color:#c97a7a">Could not connect.</div>`;
+    } catch(e) {
+      console.error(e); setStatus("error", "Connection error");
+      $("cat-list").innerHTML = '<div class="loading-screen" style="color:#c97a7a">Could not connect.</div>';
     }
   }
 
-  // ── Meta ───────────────────────────────────────────────────────────
+  function sortCats() { categories.sort((a, b) => b.items.length - a.items.length); }
+
   function updateMeta() {
     const total = categories.reduce((a, c) => a + c.items.length, 0);
-    document.getElementById("meta").textContent = `Personal Index — ${total} entries`;
-    document.getElementById("footer-left").textContent = `${categories.length} categories`;
+    $("meta").textContent = currentUser.username + "'s Index — " + total + " entries";
+    $("footer-left").textContent = categories.length + " categories";
   }
 
   // ── Render ─────────────────────────────────────────────────────────
   function render() {
-    sortCategories();
-    const list = document.getElementById("cat-list");
+    sortCats();
+    const list = $("cat-list");
     list.innerHTML = "";
-
     categories.forEach((cat, ci) => {
       const isActive = activeId === cat.id;
       const row = document.createElement("div");
@@ -227,119 +549,108 @@
 
       const left = document.createElement("div");
       left.className = "cat-num";
-      left.innerHTML = `<span>${String(ci + 1).padStart(2, "0")}</span><div class="dot${isActive ? " active" : ""}"></div>`;
+      left.innerHTML = "<span>" + String(ci+1).padStart(2,"0") + "</span><div class='dot" + (isActive?" active":"") + "'></div>";
 
       const right = document.createElement("div");
       const header = document.createElement("div");
       header.className = "cat-header";
-
       const labelWrap = document.createElement("div");
       labelWrap.className = "cat-label-wrap";
 
       const labelInput = document.createElement("input");
       labelInput.className = "cat-label" + (isActive ? " active" : "");
       labelInput.value = cat.label;
-      labelInput.onclick = e => e.stopPropagation();
+      labelInput.addEventListener("click", e => e.stopPropagation());
       labelInput.style.width = Math.max(60, cat.label.length * 13) + "px";
-      labelInput.oninput = e => { e.target.style.width = Math.max(60, e.target.value.length * 13) + "px"; };
-      labelInput.onchange = e => {
-        cat.label = e.target.value;
-        updateMeta();
+      labelInput.addEventListener("input", e => { e.target.style.width = Math.max(60, e.target.value.length * 13) + "px"; });
+      labelInput.addEventListener("change", e => {
+        cat.label = e.target.value; updateMeta();
         scheduleSave(() => dbPatch(cat.id, { label: cat.label }));
-      };
+      });
 
-      const delCatBtn = document.createElement("button");
-      delCatBtn.className = "del-cat-btn";
-      delCatBtn.textContent = "Delete";
-      delCatBtn.onclick = e => {
+      const delBtn = document.createElement("button");
+      delBtn.className = "del-cat-btn";
+      delBtn.textContent = "Delete";
+      delBtn.addEventListener("click", e => {
         e.stopPropagation();
         showConfirm(cat.label, () => {
           const id = cat.id;
           categories = categories.filter(c => c.id !== id);
           if (activeId === id) activeId = null;
-          render(); updateMeta();
+          render(); updateMeta(); checkAchievements(true);
           scheduleSave(() => dbDelete(id));
         });
-      };
+      });
 
       labelWrap.appendChild(labelInput);
-      labelWrap.appendChild(delCatBtn);
+      labelWrap.appendChild(delBtn);
 
-      const metaDiv = document.createElement("div");
-      metaDiv.className = "cat-meta";
-      metaDiv.innerHTML = `<span class="cat-count">${cat.items.length}</span><span class="chevron${isActive ? " open" : ""}">›</span>`;
+      const meta = document.createElement("div");
+      meta.className = "cat-meta";
+      meta.innerHTML = "<span class='cat-count'>" + cat.items.length + "</span><span class='chevron" + (isActive?" open":"") + "'>›</span>";
 
       header.appendChild(labelWrap);
-      header.appendChild(metaDiv);
+      header.appendChild(meta);
 
       const itemList = document.createElement("div");
       itemList.className = "item-list" + (isActive ? " open" : "");
       const inner = document.createElement("div");
       inner.className = "item-list-inner";
-      inner.onclick = e => e.stopPropagation();
+      inner.addEventListener("click", e => e.stopPropagation());
 
       cat.items.forEach((item, j) => {
-        const itemRow = document.createElement("div");
-        itemRow.className = "item-row";
-
-        const numSpan = document.createElement("span");
-        numSpan.className = "item-num";
-        numSpan.textContent = String(j + 1).padStart(2, "0");
-
-        const itemInput = document.createElement("input");
-        itemInput.className = "item-text";
-        itemInput.value = item;
-        itemInput.onchange = e => {
+        const ir = document.createElement("div");
+        ir.className = "item-row";
+        const num = document.createElement("span");
+        num.className = "item-num";
+        num.textContent = String(j+1).padStart(2,"0");
+        const inp = document.createElement("input");
+        inp.className = "item-text";
+        inp.value = item;
+        inp.addEventListener("change", e => {
           const val = e.target.value.trim();
-          if (!val) { cat.items.splice(j, 1); }
-          else { cat.items[j] = val; }
-          render(); updateMeta();
+          if (!val) cat.items.splice(j, 1); else cat.items[j] = val;
+          render(); updateMeta(); checkAchievements(false);
           scheduleSave(() => dbPatch(cat.id, { items: cat.items }));
-        };
-
-        const delBtn = document.createElement("button");
-        delBtn.className = "del-item-btn";
-        delBtn.textContent = "×";
-        delBtn.onclick = () => {
+        });
+        const del = document.createElement("button");
+        del.className = "del-item-btn";
+        del.textContent = "×";
+        del.addEventListener("click", () => {
           cat.items.splice(j, 1);
-          render(); updateMeta();
+          render(); updateMeta(); checkAchievements(true);
           scheduleSave(() => dbPatch(cat.id, { items: cat.items }));
-        };
-
-        itemRow.appendChild(numSpan);
-        itemRow.appendChild(itemInput);
-        itemRow.appendChild(delBtn);
-        inner.appendChild(itemRow);
+        });
+        ir.appendChild(num); ir.appendChild(inp); ir.appendChild(del);
+        inner.appendChild(ir);
       });
 
       const addBtn = document.createElement("button");
       addBtn.className = "add-item-btn";
       addBtn.innerHTML = "<span style='font-size:11px'>+</span> Add item";
-      addBtn.onclick = () => {
+      addBtn.addEventListener("click", () => {
         addBtn.style.display = "none";
         const addRow = document.createElement("div");
         addRow.className = "add-item-row";
-        const numSpan = document.createElement("span");
-        numSpan.className = "item-num";
-        numSpan.textContent = String(cat.items.length + 1).padStart(2, "0");
-        const newInput = document.createElement("input");
-        newInput.className = "new-item-input";
-        newInput.placeholder = "New item…";
+        const num = document.createElement("span");
+        num.className = "item-num";
+        num.textContent = String(cat.items.length+1).padStart(2,"0");
+        const inp = document.createElement("input");
+        inp.className = "new-item-input";
+        inp.placeholder = "New item…";
+        let committed = false;
         const commit = () => {
-          const val = newInput.value.trim();
-          if (val) {
-            cat.items.push(val);
-            scheduleSave(() => dbPatch(cat.id, { items: cat.items }));
-          }
+          if (committed) return; committed = true;
+          const val = inp.value.trim();
+          if (val) { cat.items.push(val); itemAddFlair(inp); scheduleSave(() => dbPatch(cat.id, { items: cat.items })); checkAchievements(false); }
           render(); updateMeta();
         };
-        newInput.onblur = commit;
-        newInput.onkeydown = e => { if (e.key === "Enter") commit(); if (e.key === "Escape") render(); };
-        addRow.appendChild(numSpan);
-        addRow.appendChild(newInput);
+        inp.addEventListener("blur", commit);
+        inp.addEventListener("keydown", e => { if (e.key==="Enter") { e.preventDefault(); commit(); } if (e.key==="Escape") render(); });
+        addRow.appendChild(num); addRow.appendChild(inp);
         inner.appendChild(addRow);
-        setTimeout(() => newInput.focus(), 10);
-      };
+        setTimeout(() => inp.focus(), 10);
+      });
 
       inner.appendChild(addBtn);
       itemList.appendChild(inner);
@@ -347,45 +658,228 @@
       right.appendChild(itemList);
       row.appendChild(left);
       row.appendChild(right);
-      row.onclick = () => { activeId = activeId === cat.id ? null : cat.id; render(); };
+      row.addEventListener("click", () => {
+        const opening = activeId !== cat.id;
+        activeId = activeId === cat.id ? null : cat.id;
+        render();
+        if (opening) {
+          const rows = document.querySelectorAll(".cat-row");
+          // find the row that just became active
+          rows.forEach(r => { if (r.querySelector(".cat-label.active")) categoryOpenFlair(r); });
+          // pop each item in
+          document.querySelectorAll(".item-row").forEach((ir, i) => {
+            ir.classList.add("pop");
+            ir.style.animationDelay = (i * 0.04) + "s";
+          });
+        }
+      });
       list.appendChild(row);
     });
-
     updateMeta();
   }
 
-  // ── Add category ───────────────────────────────────────────────────
   async function addCategory() {
     setStatus("saving", "Saving…");
     try {
       const row = await dbInsert({ label: "New Category", items: [], sort_order: categories.length });
       categories.push({ id: row.id, label: row.label, items: [] });
       activeId = row.id;
-      render();
+      render(); checkAchievements(false);
       setStatus("saved", "Saved");
       setTimeout(() => {
         const inputs = document.querySelectorAll(".cat-label");
-        const last = inputs[inputs.length - 1];
+        const last = inputs[inputs.length-1];
         if (last) { last.focus(); last.select(); }
       }, 50);
-    } catch (e) {
-      console.error(e);
-      setStatus("error", "Save failed");
+    } catch(e) { console.error(e); setStatus("error", "Save failed"); }
+  }
+
+  // ── Read-only mode ─────────────────────────────────────────────────
+  async function loadReadOnly(username) {
+    const res = await fetch(SUPABASE_URL + "/rest/v1/" + USERS + "?username=eq." + encodeURIComponent(username.toLowerCase()) + "&select=*", { headers: H });
+    const users = await res.json();
+    if (!users.length) {
+      document.body.innerHTML = '<div style="padding:80px 24px;font-family:DM Mono,monospace;font-size:11px;color:#999;text-align:center;letter-spacing:0.15em;text-transform:uppercase">List not found</div>';
+      return;
     }
+    const user = users[0];
+    const catRes = await fetch(SUPABASE_URL + "/rest/v1/" + TABLE + "?select=*&user_id=eq." + user.id, { headers: H });
+    const rows = await catRes.json();
+    categories = rows.map(r => ({ id: r.id, label: r.label, items: Array.isArray(r.items) ? r.items : [] }));
+    sortCats();
+    readonlyMode = true;
+    readonlyUsername = user.username;
+    $("readonly-banner").style.display = "block";
+    $("readonly-name").textContent = user.username;
+    $("auth-screen").style.display = "none";
+    $("app-screen").classList.add("visible");
+    $("cat-list").innerHTML = "";
+    renderReadOnly();
   }
 
-  // ── Confirm dialog ─────────────────────────────────────────────────
-  function showConfirm(label, onConfirm) {
-    document.getElementById("confirm-label").textContent = label.toUpperCase();
-    document.getElementById("confirm-overlay").style.display = "flex";
-    document.getElementById("confirm-delete-btn").onclick = () => { closeConfirm(); onConfirm(); };
+  function renderReadOnly() {
+    sortCats();
+    const total = categories.reduce((a,c) => a + c.items.length, 0);
+    $("meta").textContent = readonlyUsername + "'s Index — " + total + " entries";
+    $("footer-left").textContent = categories.length + " categories";
+    document.querySelector(".toolbar").style.display = "none";
+    $("add-cat-btn").style.display = "none";
+    const list = $("cat-list");
+    list.innerHTML = "";
+    categories.forEach((cat, ci) => {
+      const isActive = activeId === cat.id;
+      const row = document.createElement("div");
+      row.className = "cat-row" + (ci === categories.length-1 ? " last" : "");
+      const left = document.createElement("div");
+      left.className = "cat-num";
+      left.innerHTML = "<span>" + String(ci+1).padStart(2,"0") + "</span><div class='dot" + (isActive?" active":"") + "'></div>";
+      const right = document.createElement("div");
+      const header = document.createElement("div");
+      header.className = "cat-header";
+      const labelSpan = document.createElement("span");
+      labelSpan.className = "cat-label" + (isActive?" active":"");
+      labelSpan.textContent = cat.label;
+      const meta = document.createElement("div");
+      meta.className = "cat-meta";
+      meta.innerHTML = "<span class='cat-count'>" + cat.items.length + "</span><span class='chevron" + (isActive?" open":"") + "'>›</span>";
+      header.appendChild(labelSpan);
+      header.appendChild(meta);
+      const itemList = document.createElement("div");
+      itemList.className = "item-list" + (isActive?" open":"");
+      const inner = document.createElement("div");
+      inner.className = "item-list-inner";
+      cat.items.forEach((item, j) => {
+        const ir = document.createElement("div");
+        ir.className = "item-row";
+        const num = document.createElement("span");
+        num.className = "item-num";
+        num.textContent = String(j+1).padStart(2,"0");
+        const span = document.createElement("span");
+        span.className = "item-text";
+        span.textContent = item;
+        ir.appendChild(num); ir.appendChild(span);
+        inner.appendChild(ir);
+      });
+      itemList.appendChild(inner);
+      right.appendChild(header);
+      right.appendChild(itemList);
+      row.appendChild(left);
+      row.appendChild(right);
+      row.addEventListener("click", () => { activeId = activeId===cat.id?null:cat.id; renderReadOnly(); });
+      list.appendChild(row);
+    });
   }
 
-  function closeConfirm() {
-    document.getElementById("confirm-overlay").style.display = "none";
+  // ── Wire up all buttons ────────────────────────────────────────────
+  $("ach-btn").addEventListener("click", toggleAch);
+  $("ach-close").addEventListener("click", toggleAch);
+  $("ach-overlay").addEventListener("click", toggleAch);
+  $("share-btn").addEventListener("click", openShare);
+  $("share-close").addEventListener("click", () => $("share-modal").classList.remove("open"));
+  $("copy-btn").addEventListener("click", copyLink);
+  $("logout-btn").addEventListener("click", logout);
+  $("add-cat-btn").addEventListener("click", addCategory);
+  $("confirm-cancel").addEventListener("click", closeConfirm);
+  $("confirm-ok").addEventListener("click", () => { if (confirmCallback) confirmCallback(); closeConfirm(); });
+  $("tab-login").addEventListener("click", () => switchTab("login"));
+  $("tab-signup").addEventListener("click", () => switchTab("signup"));
+  $("auth-submit").addEventListener("click", submitAuth);
+  $("auth-password").addEventListener("keydown", e => { if (e.key==="Enter") submitAuth(); });
+  $("make-own-link").addEventListener("click", () => { window.location.href = window.location.pathname; });
+
+  // ── Visual flair ───────────────────────────────────────────────────
+  const confettiCanvas = document.getElementById("confetti-canvas");
+  const confettiCtx = confettiCanvas.getContext("2d");
+  let particles = [];
+
+  function resizeConfetti() {
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+  }
+  resizeConfetti();
+  window.addEventListener("resize", resizeConfetti);
+
+  function spawnConfetti(x, y, count) {
+    const colors = ["#1a1a1a","#c8bfb0","#d4a843","#c97a7a","#7a9ac9","#8fbf8f"];
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 5;
+      particles.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        size: 4 + Math.random() * 5,
+        rot: Math.random() * Math.PI * 2,
+        rotV: (Math.random() - 0.5) * 0.2,
+        life: 1,
+        decay: 0.012 + Math.random() * 0.012,
+        shape: Math.random() > 0.5 ? "rect" : "circle"
+      });
+    }
+    if (particles.length > 0 && !confettiRunning) confettiLoop();
   }
 
-  loadData();
+  let confettiRunning = false;
+  function confettiLoop() {
+    confettiRunning = true;
+    confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.18;
+      p.vx *= 0.98; p.rot += p.rotV; p.life -= p.decay;
+      confettiCtx.save();
+      confettiCtx.globalAlpha = Math.max(0, p.life);
+      confettiCtx.translate(p.x, p.y);
+      confettiCtx.rotate(p.rot);
+      confettiCtx.fillStyle = p.color;
+      if (p.shape === "rect") confettiCtx.fillRect(-p.size/2, -p.size/4, p.size, p.size/2);
+      else { confettiCtx.beginPath(); confettiCtx.arc(0,0,p.size/2,0,Math.PI*2); confettiCtx.fill(); }
+      confettiCtx.restore();
+    });
+    particles = particles.filter(p => p.life > 0);
+    if (particles.length > 0) requestAnimationFrame(confettiLoop);
+    else { confettiRunning = false; confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height); }
+  }
+
+  // Mini burst for adding an item — sparks near the input
+  function itemAddFlair(el) {
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    spawnConfetti(rect.left, rect.top + rect.height / 2, 22);
+    // Bounce the count badge of the active category
+    const activeCounts = document.querySelectorAll(".cat-count");
+    activeCounts.forEach(c => {
+      c.classList.remove("bounce");
+      void c.offsetWidth;
+      c.classList.add("bounce");
+      c.addEventListener("animationend", () => c.classList.remove("bounce"), { once: true });
+    });
+  }
+
+  // Big burst for achievements
+  function achievementFlair() {
+    spawnConfetti(window.innerWidth / 2, window.innerHeight * 0.4, 80);
+  }
+
+  // Flash on category open/close
+  function categoryOpenFlair(rowEl) {
+    if (!rowEl) return;
+    rowEl.classList.remove("opening");
+    void rowEl.offsetWidth;
+    rowEl.classList.add("opening");
+    rowEl.addEventListener("animationend", () => rowEl.classList.remove("opening"), { once: true });
+  }
+
+  // ── Init ───────────────────────────────────────────────────────────
+  const params = new URLSearchParams(window.location.search);
+  const viewUser = params.get("view");
+  if (viewUser) {
+    $("auth-screen").style.display = "none";
+    loadReadOnly(viewUser);
+  } else {
+    const saved = localStorage.getItem("current-user");
+    if (saved) loginUser(JSON.parse(saved));
+  }
 </script>
 </body>
 </html>
